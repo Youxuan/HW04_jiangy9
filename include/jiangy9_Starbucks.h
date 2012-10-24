@@ -1,10 +1,19 @@
 #pragma once
 #include <string>
 #include "Starbucks.h"
-#include "HW04_jiangy9.h"
 #include "Resources.h"
 #include <string>
 using namespace std;
+
+class node{
+	public:
+		node* left;
+        node* right;
+    	Entry* data;
+
+		node();
+        node(Entry* e);
+};
 
 class jiangy9_Starbucks : public Starbucks{
 	public:
@@ -22,12 +31,3 @@ class jiangy9_Starbucks : public Starbucks{
 		double y;
 };
 
-class node{
-	public:
-		node* left;
-        node* right;
-    	Entry* data;
-
-		node();
-        node(Entry* e);
-};

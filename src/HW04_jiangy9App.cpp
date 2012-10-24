@@ -1,3 +1,4 @@
+#pragma once
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "Starbucks.h"
@@ -27,46 +28,63 @@ class HW04_jiangy9App : public AppBasic {
 
 //read data from file and store data into an array
 void HW04_jiangy9App::readFromFile(Entry** entries, int* length){
-	ifstream fileInput("../resources/Test.csv");
-	if(!fileInput)
+	ifstream fileInput_1("../resources/Starbucks_2006.csv");
+	if(!fileInput_1)
 		console() << "Cannot open folder!" << std::endl;
 
-	string line;	
 	//check how many items in that file
-	while(!fileInput.eof()){	    
-		getline(fileInput,line,'\n'); 
-		*length++;
-	}
-	fileInput.close();
-	console() << *length <<std::endl;
-}
-
-	//create array and assign value into array
-	/**entries = new Entry[*length];
-	for(int i=0;i<*length;i++){
-		(*entries)[i].identifier = getline(getFirstLetter,256,',');
-		 = getFirstLetter; //pointer or variable...
+	string line;
+	while(!fileInput_1.eof()){	    
+		getline(fileInput_1,line,',');
 		
 		double l_x;
-		fileInput >> l_x;
-		(*entries)[i].x = l_x; //get x coordinate
-		
-		char c2;
-		fileInput.get(c2); //consume the comma
-		
-		double l_y;
-		fileInput >> l_y;
-		(*entries)[i].y = l_y; //get y coordinate*/
+		fileInput_1 >> l_x;
 
+		char comma;
+		fileInput_1.get(comma);
+
+		double l_y;
+		fileInput_1 >> l_y;
+
+		*length += 1;
+	}
+	fileInput_1.close();
+	*length -= 1;
+	//console() << *length << std::endl;
+
+	//read data from file into array
+	ifstream fileInput_2("../resources/Starbucks_2006.csv");
+	*entries = new Entry[*length];
+	for(int i=0;i<*length;i++){
+		getline(fileInput_2,line,',');
+		(*entries)[i].identifier = line;
+
+		//console() << "This spot1 " << (*entries)[i].identifier << std::endl;
+		
+		double l_x;
+		fileInput_2 >> l_x;
+		(*entries)[i].x = l_x;
+
+		//console() << "This spot 2 " << (*entries)[i].x << std::endl;
+
+		char comma;
+		fileInput_2.get(comma);
+
+		double l_y;
+		fileInput_2 >> l_y;
+		(*entries)[i].y = l_y;
+
+		//console() << "This spot 3 " << (*entries)[i].y << std::endl;
+	}
+	fileInput_2.close();
+}
 
 void HW04_jiangy9App::setup()
 {
 	entries = NULL;
 	length = 0;
-	//console() << "Lucy" << std::endl;
-	//use this line to test if input is correct.
 	readFromFile(&entries, &length);
-	console() << &entries[0] << std::endl; //???????
+	
 }
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )

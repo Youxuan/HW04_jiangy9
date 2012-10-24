@@ -1,3 +1,4 @@
+#pragma once
 #include "jiangy9_Starbucks.h"
 #include <math.h>
 
