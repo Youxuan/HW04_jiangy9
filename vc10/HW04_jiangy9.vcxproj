@@ -104,11 +104,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\HW04_jiangy9.cpp" />
     <ClCompile Include="..\src\HW04_jiangy9App.cpp" />
+    <ClCompile Include="..\src\jiangy9_Starbucks.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\HW04_jiangy9.h" />
     <ClInclude Include="..\include\jiangy9_Starbucks.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\include\Starbucks.h" />

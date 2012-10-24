@@ -8,10 +8,11 @@ using namespace std;
 
 class jiangy9_Starbucks : public Starbucks{
 	public:
-		virtual node* insert(Entry* e, node* r, bool isXlevel);
+		node* insert(Entry* e, node* r, bool isXlevel);
 		virtual void build(Entry* e, int n);
-		virtual double distance(double x, double y, node* r);
-		virtual node* getNearest(double x, double y, node* r);
+		double distance(double x, double y, node* r);
+		node* checkOneSubtree(double x, double y, node* r);
+		virtual Entry* getNearest(double x, double y);
 
 	private:
 		Entry* e;
@@ -19,4 +20,14 @@ class jiangy9_Starbucks : public Starbucks{
 		bool isXlevel;
 		double x;
 		double y;
+};
+
+class node{
+	public:
+		node* left;
+        node* right;
+    	Entry* data;
+
+		node();
+        node(Entry* e);
 };

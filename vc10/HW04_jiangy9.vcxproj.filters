@@ -18,7 +18,7 @@
     <ClCompile Include="..\src\HW04_jiangy9App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\HW04_jiangy9.cpp">
+    <ClCompile Include="..\src\jiangy9_Starbucks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -30,9 +30,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\jiangy9_Starbucks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\HW04_jiangy9.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
