@@ -23,7 +23,8 @@ class HW04_jiangy9App : public AppBasic {
 
 	private:
 		Entry* entries; 
-		int length; 
+		int length;
+		jiangy9_Starbucks foo;
 };
 
 //read data from file and store data into an array
@@ -36,13 +37,10 @@ void HW04_jiangy9App::readFromFile(Entry** entries, int* length){
 	string line;
 	while(!fileInput_1.eof()){	    
 		getline(fileInput_1,line,',');
-		
 		double l_x;
 		fileInput_1 >> l_x;
-
 		char comma;
 		fileInput_1.get(comma);
-
 		double l_y;
 		fileInput_1 >> l_y;
 
@@ -50,7 +48,7 @@ void HW04_jiangy9App::readFromFile(Entry** entries, int* length){
 	}
 	fileInput_1.close();
 	*length -= 1;
-	//console() << *length << std::endl;
+	console() << *length << std::endl;
 
 	//read data from file into array
 	ifstream fileInput_2("../resources/Starbucks_2006.csv");
@@ -82,9 +80,10 @@ void HW04_jiangy9App::readFromFile(Entry** entries, int* length){
 void HW04_jiangy9App::setup()
 {
 	entries = NULL;
-	length = 0;
+	length = 0; //length is from 0 to 7654(real length is 1 to 7655)
 	readFromFile(&entries, &length);
-	
+	foo.build(entries, length);
+	console() << foo.getNearest(5,5)->identifier << std::endl;
 }
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )
