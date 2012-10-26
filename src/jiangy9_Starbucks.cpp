@@ -62,13 +62,13 @@ node* jiangy9_Starbucks::checkOneSubtree(double x, double y, node* r, bool isXle
 	node* foundRight = NULL;
 	//decide which side to go in K-d tree
 	if(isXlevel){
-		if(r->data->x < x)
+		if(r->data->x > x)
 			foundLeft = checkOneSubtree(x,y,r->left,!isXlevel);
 		if(foundLeft == NULL)
 			foundRight = checkOneSubtree(x,y,r->right,!isXlevel);
 	}
 	else{
-		if(r->data->y < y)
+		if(r->data->y > y)
 			foundLeft = checkOneSubtree(x,y,r->left,!isXlevel);
 		if(foundLeft == NULL)
 			foundRight = checkOneSubtree(x,y,r->right,!isXlevel);

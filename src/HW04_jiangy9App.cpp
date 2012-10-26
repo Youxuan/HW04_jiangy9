@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "cinder/Rand.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -19,12 +20,14 @@ class HW04_jiangy9App : public AppBasic {
 		void mouseDown( MouseEvent event );	
 		void update();
 		void draw();
-		void readFromFile(Entry** entires, int* length); //read data from file
+		void readFromFile(Entry** entries, int* length); 
+		void mix(Entry* entries, int length);
 
 	private:
 		Entry* entries; 
 		int length;
 		jiangy9_Starbucks foo;
+		//Rand myrand;
 };
 
 //read data from file and store data into an array
@@ -57,13 +60,13 @@ void HW04_jiangy9App::readFromFile(Entry** entries, int* length){
 		getline(fileInput_2,line,',');
 		(*entries)[i].identifier = line;
 
-		//console() << "This spot1 " << (*entries)[i].identifier << std::endl;
+		//console() << (*entries)[i].identifier << std::endl;
 		
 		double l_x;
 		fileInput_2 >> l_x;
 		(*entries)[i].x = l_x;
 
-		//console() << "This spot 2 " << (*entries)[i].x << std::endl;
+		//console() << (*entries)[i].x << std::endl;
 
 		char comma;
 		fileInput_2.get(comma);
@@ -72,18 +75,30 @@ void HW04_jiangy9App::readFromFile(Entry** entries, int* length){
 		fileInput_2 >> l_y;
 		(*entries)[i].y = l_y;
 
-		//console() << "This spot 3 " << (*entries)[i].y << std::endl;
+		//console() << (*entries)[i].y << std::endl;
 	}
 	fileInput_2.close();
 }
 
+void HW04_jiangy9App::mix(Entry* entries, int length){ //Does it really provide random number?
+	int pick = 0;
+	for(int i=0;i<length-1;i++){
+		pick = Rand::randInt(i+1,length);
+		Entry temp = entries[i];
+		entries[i] = entries[pick];
+		entries[pick] = temp;
+	}
+}
+
 void HW04_jiangy9App::setup()
 {
+	Rand::randomize();
 	entries = NULL;
 	length = 0; //length is from 0 to 7654(real length is 1 to 7655)
 	readFromFile(&entries, &length);
+	mix(entries,length);
 	foo.build(entries, length);
-	console() << foo.getNearest(5,5)->identifier << std::endl;
+	console() << foo.getNearest(0.12345,0.23456)->identifier << std::endl;
 }
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )
