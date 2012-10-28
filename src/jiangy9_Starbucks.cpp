@@ -1,6 +1,7 @@
 #pragma once
 #include "jiangy9_Starbucks.h"
 #include <math.h>
+#include "cinder/Rand.h"
 
 node::node(){
 	left = NULL;
@@ -108,7 +109,7 @@ node* jiangy9_Starbucks::checkOneSubtree(double x, double y, node* r, bool isXle
 		}
 	}
 
-	
+	//decide which one should be returned
 	if(foundLeft == NULL && foundRight != NULL){
 		if(getDistance(x,y,r) > getDistance(x,y,foundRight))
 			return foundRight;
@@ -134,4 +135,14 @@ node* jiangy9_Starbucks::checkOneSubtree(double x, double y, node* r, bool isXle
 
 Entry* jiangy9_Starbucks::getNearest(double x, double y){
 	return checkOneSubtree(x,y,r,true)->data;
+}
+
+void jiangy9_Starbucks::mix(Entry* entries, int length){
+	int pick = 0;
+	for(int i=0;i<length-1;i++){
+		pick = cinder::Rand::randInt(i+1,length);
+		Entry temp = entries[i];
+		entries[i] = entries[pick];
+		entries[pick] = temp;
+	}
 }

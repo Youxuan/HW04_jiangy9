@@ -3,6 +3,7 @@
 #include "Starbucks.h"
 #include "Resources.h"
 #include <string>
+#include "cinder/Rand.h"
 using namespace std;
 
 class node{
@@ -22,6 +23,7 @@ class jiangy9_Starbucks : public Starbucks{
 		double getDistance(double x, double y, node* r);
 		node* checkOneSubtree(double x, double y, node* r, bool isXlevel);
 		virtual Entry* getNearest(double x, double y);
+		void mix(Entry* entries, int length);
 
 	private:
 		Entry* e;

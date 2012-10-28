@@ -21,7 +21,6 @@ class HW04_jiangy9App : public AppBasic {
 		void update();
 		void draw();
 		void readFromFile(Entry** entries, int* length); 
-		void mix(Entry* entries, int length);
 
 	private:
 		Entry* entries; 
@@ -80,25 +79,16 @@ void HW04_jiangy9App::readFromFile(Entry** entries, int* length){
 	fileInput_2.close();
 }
 
-void HW04_jiangy9App::mix(Entry* entries, int length){ //Does it really provide random number?
-	int pick = 0;
-	for(int i=0;i<length-1;i++){
-		pick = Rand::randInt(i+1,length);
-		Entry temp = entries[i];
-		entries[i] = entries[pick];
-		entries[pick] = temp;
-	}
-}
-
 void HW04_jiangy9App::setup()
 {
 	Rand::randomize();
 	entries = NULL;
 	length = 0; //length is from 0 to 7654(real length is 1 to 7655)
 	readFromFile(&entries, &length);
-	mix(entries,length);
+	foo.mix(entries,length);
 	foo.build(entries, length);
-	console() << foo.getNearest(0.12345,0.23456)->identifier << std::endl;
+
+	console() << foo.getNearest(0.0000001,0.1234567)->identifier << std::endl;
 }
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )
