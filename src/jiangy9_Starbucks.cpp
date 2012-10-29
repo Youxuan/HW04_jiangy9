@@ -40,6 +40,11 @@ node* jiangy9_Starbucks::insert(Entry* e, node* r, bool isXlevel){
 
 //build the entire K-d tree
 void jiangy9_Starbucks::build(Entry* e, int n){
+	Entry* newEntries = new Entry[n];
+	for(int i=0;i<n;i++)
+		newEntries[i] = e[i];
+	e = newEntries;
+	mix(e, n);
 	r = new node(e);
 	for(int i=1;i<n;i++){
 		insert(&e[i],r,true); 

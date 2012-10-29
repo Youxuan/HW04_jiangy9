@@ -85,12 +85,15 @@ void HW04_jiangy9App::setup()
 	entries = NULL;
 	length = 0; //length is from 0 to 7654(real length is 1 to 7655)
 	readFromFile(&entries, &length);
-	foo.mix(entries,length);
 	foo.build(entries, length);
+	//for(int i=0;i<length;i++)
+		//delete &(entries[i]);
+
+	delete [] entries;
+
+	//console() << entries[1].identifier << endl;
 
 	console() << foo.getNearest(0.1234567,0.1234567)->identifier << std::endl;
-	console() << foo.getNearest(0.2345678,0.2345678)->identifier << std::endl;
-	console() << foo.getNearest(0.3456789,0.3456789)->identifier << std::endl;
 }
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )
