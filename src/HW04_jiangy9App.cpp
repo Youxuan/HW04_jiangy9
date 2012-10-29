@@ -88,7 +88,9 @@ void HW04_jiangy9App::setup()
 	foo.mix(entries,length);
 	foo.build(entries, length);
 
-	console() << foo.getNearest(0.0000001,0.1234567)->identifier << std::endl;
+	console() << foo.getNearest(0.1234567,0.1234567)->identifier << std::endl;
+	console() << foo.getNearest(0.2345678,0.2345678)->identifier << std::endl;
+	console() << foo.getNearest(0.3456789,0.3456789)->identifier << std::endl;
 }
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )

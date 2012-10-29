@@ -84,13 +84,13 @@ node* jiangy9_Starbucks::checkOneSubtree(double x, double y, node* r, bool isXle
 			if(getDistance(x,y,foundRight) > getDistance(x,y,r))
 				foundRight = r;
 			//check root and foundLeft, which one is more close, compare that one to ...
-			if(abs(x-foundRight->data->x) > getDistance(x,y,foundRight))
+			if(abs(x-foundRight->data->x) < getDistance(x,y,foundRight))
 				foundLeft = checkOneSubtree(x,y,r->left,!isXlevel);
 		}
 		if(foundRight==NULL){
 			if(getDistance(x,y,foundLeft) > getDistance(x,y,r))
 				foundLeft = r;
-			if(abs(x-foundLeft->data->x) > getDistance(x,y,foundLeft))
+			if(abs(x-foundLeft->data->x) < getDistance(x,y,foundLeft))
 				foundRight = checkOneSubtree(x,y,r->right,!isXlevel);
 		}
 	}
@@ -98,13 +98,13 @@ node* jiangy9_Starbucks::checkOneSubtree(double x, double y, node* r, bool isXle
 		if(foundLeft==NULL){
 			if(getDistance(x,y,foundRight) > getDistance(x,y,r))
 				foundRight = r;
-			if(abs(y-foundRight->data->y) > getDistance(x,y,foundRight))
+			if(abs(y-foundRight->data->y) < getDistance(x,y,foundRight))
 				foundLeft = checkOneSubtree(x,y,r->left,!isXlevel);
 		}
 		if(foundRight==NULL){
 			if(getDistance(x,y,foundLeft) > getDistance(x,y,r))
 				foundLeft = r;
-			if(abs(y-foundLeft->data->y) > getDistance(x,y,foundLeft))
+			if(abs(y-foundLeft->data->y) < getDistance(x,y,foundLeft))
 				foundRight = checkOneSubtree(x,y,r->right,!isXlevel);
 		}
 	}
