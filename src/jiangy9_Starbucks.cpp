@@ -2,6 +2,13 @@
 #include "jiangy9_Starbucks.h"
 #include <math.h>
 #include "cinder/Rand.h"
+#include "cinder/app/AppBasic.h"
+#include "cinder/gl/gl.h"
+#include "cinder/gl/Texture.h"
+
+using namespace std;
+using namespace ci;
+using namespace ci::app;
 
 node::node(){
 	left = NULL;
@@ -12,6 +19,14 @@ node::node(){
 node::node(Entry* e){
 	left = right = NULL;
 	data = e;
+}
+
+void jiangy9_Starbucks::setColor(Color8u newColor){
+	color = newColor;
+}
+
+void jiangy9_Starbucks::setArray(uint8_t* newDataArray){
+	dataArray = newDataArray;
 }
 
 //add one new Starbucks object into K-d tree
@@ -49,6 +64,7 @@ void jiangy9_Starbucks::build(Entry* e, int n){
 	for(int i=1;i<n;i++){
 		insert(&e[i],r,true); 
 	}
+	traversal(r, dataArray, color);
 }
 
 //calculate distance between given location and Starbucks in current node
@@ -149,5 +165,18 @@ void jiangy9_Starbucks::mix(Entry* entries, int length){
 		Entry temp = entries[i];
 		entries[i] = entries[pick];
 		entries[pick] = temp;
+	}
+}
+
+void jiangy9_Starbucks::traversal(node* r, uint8_t* dataArray, Color8u color){
+	if(r==NULL)
+		return;
+	else{
+		traversal(r->left,dataArray,color);
+		dataArray[4 * (((int)((1-r->data->x)*windowWidth) + (int)((1-r->data->y)*windowHeight) * windowWidth))] = color.r;
+		dataArray[4 * (((int)((1-r->data->x)*windowWidth) + (int)((1-r->data->y)*windowHeight) * windowWidth))+1] = color.g;
+		dataArray[4 * (((int)((1-r->data->x)*windowWidth) + (int)((1-r->data->y)*windowHeight) * windowWidth))+2] = color.b;
+		dataArray[4 * (((int)((1-r->data->x)*windowWidth) + (int)((1-r->data->y)*windowHeight) * windowWidth))] = 255;
+		traversal(r->right,dataArray,color);
 	}
 }

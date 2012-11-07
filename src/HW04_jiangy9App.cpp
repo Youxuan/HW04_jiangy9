@@ -9,6 +9,8 @@
 #include <fstream>
 #include <string>
 #include "cinder/Rand.h"
+#include "cinder/ImageIo.h"
+#include "cinder/gl/Texture.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -20,14 +22,22 @@ class HW04_jiangy9App : public AppBasic {
 		void mouseDown( MouseEvent event );	
 		void update();
 		void draw();
+		void prepareSettings(Settings* settings);
 		void readFromFile(Entry** entries, int* length); 
 
 	private:
+		static const int windowWidth = 1024;
+		static const int windowHeight = 1024;
 		Entry* entries; 
 		int length;
 		jiangy9_Starbucks foo;
-		//Rand myrand;
+		Surface* mySurface;
+
 };
+
+void HW04_jiangy9App::prepareSettings(Settings* settings){
+	settings->setWindowSize(windowWidth, windowHeight);
+}
 
 //read data from file and store data into an array
 void HW04_jiangy9App::readFromFile(Entry** entries, int* length){
@@ -81,19 +91,27 @@ void HW04_jiangy9App::readFromFile(Entry** entries, int* length){
 
 void HW04_jiangy9App::setup()
 {
+	mySurface = new Surface(windowWidth, windowHeight, true);
+	foo.setColor(Color8u(237,28,36));
+	uint8_t* dataArray = (*mySurface).getData();
+	//set every pixel on surface transparent in order to display the map
+	for(int x=0;x<windowWidth;x++){
+		for(int y=0;y<windowHeight;y++)
+			dataArray[4*(x + y * windowWidth)+3] = 0;
+	}
+
+	foo.setArray(dataArray);
 	Rand::randomize();
 	entries = NULL;
 	length = 0; //length is from 0 to 7654(real length is 1 to 7655)
+	
 	readFromFile(&entries, &length);
 	foo.build(entries, length);
-	//for(int i=0;i<length;i++)
-		//delete &(entries[i]);
-
 	delete [] entries;
 
-	//console() << entries[1].identifier << endl;
+	
 
-	console() << foo.getNearest(0.1234567,0.1234567)->identifier << std::endl;
+	//console() << foo.getNearest(0.5,0.5)->identifier << std::endl;
 }
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )
@@ -102,11 +120,15 @@ void HW04_jiangy9App::mouseDown( MouseEvent event )
 
 void HW04_jiangy9App::update()
 {
+	
 }
 
 void HW04_jiangy9App::draw()
 {
-	
+	//draw map of the U.S.
+	gl::Texture myTexture( loadImage( loadResource( RES_MAP ) ) );
+	gl::draw(myTexture);
+	gl::draw(*mySurface);
 	   
 }
 
