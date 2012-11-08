@@ -16,14 +16,20 @@ void Circle::setCircle(uint8_t* dataArray_new, float radius_new, float center_x_
 	color = color_new;
 }
 
+
+
 void Circle::draw(){
+
+	center_x = .5;
+	center_y = .5;
+
 	for(int y=0; y<=windowHeight; y++){
 		for(int x=0;x<=windowWidth; x++){
-			if ((x-center_x)*(x-center_x) + (y-center_y)*(y-center_y) <= radius*radius){
-				dataArray[4*(((int)((1-center_x)*windowWidth) + (int)((1-center_y)*windowHeight) * windowWidth))] = color.r;
-				dataArray[4*(((int)((1-center_x)*windowWidth) + (int)((1-center_y)*windowHeight) * windowWidth))+1] = color.g;
-				dataArray[4*(((int)((1-center_x)*windowWidth) + (int)((1-center_y)*windowHeight) * windowWidth))+2] = color.b;
-				dataArray[4*(((int)((1-center_x)*windowWidth) + (int)((1-center_y)*windowHeight) * windowWidth))+3] = 255;
+			if ((x-(center_x*windowWidth))*(x-(center_x*windowWidth)) + (y-((1-center_y)*windowHeight))*(y-((1-center_y)*windowHeight)) <= radius*radius){
+				dataArray[4*(((int)((center_x)*windowWidth) + (int)((1-center_y)*windowHeight) * windowWidth))] = color.r;
+				dataArray[4*(((int)((center_x)*windowWidth) + (int)((1-center_y)*windowHeight) * windowWidth))+1] = color.g;
+				dataArray[4*(((int)((center_x)*windowWidth) + (int)((1-center_y)*windowHeight) * windowWidth))+2] = color.b;
+				dataArray[4*(((int)((center_x)*windowWidth) + (int)((1-center_y)*windowHeight) * windowWidth))+3] = 255;
 			}
 		}
 	}

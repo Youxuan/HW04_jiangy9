@@ -37,6 +37,7 @@ class HW04_jiangy9App : public AppBasic {
 		double x;
 		double y;
 		Circle* circle;
+		uint8_t* dataArray;
 };
 
 void HW04_jiangy9App::prepareSettings(Settings* settings){
@@ -120,15 +121,12 @@ void HW04_jiangy9App::setup()
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )
 {
-	if(event.isLeftDown()){
-		//circle->setCircle((*mySurface).getData(), 10.0f, x, y, Color8u(0,0,0));
-		
-		x = (double)event.getX();
-		y = (double)event.getY();
+	if(event.isLeftDown()){		
+		x = (double)event.getX()/windowWidth;
+		y = 1-((double)event.getY()/windowHeight);
 
 		circle->setCircle((*mySurface).getData(), 10.0f, (float)(foo.getNearest(x,y)->x), (float)(foo.getNearest(x,y)->y), Color8u(0,0,0));
-		console() << x << " " << y << std::endl;
-		
+		console() << foo.getNearest(x,y)->x << " " << foo.getNearest(x,y)->y << std::endl;		
 
 		click++;
 	}
@@ -136,7 +134,10 @@ void HW04_jiangy9App::mouseDown( MouseEvent event )
 
 void HW04_jiangy9App::update()
 {
-	if(click%2==1){
+	dataArray = (*mySurface).getData();
+	circle->setCircle(dataArray, 10.0f, 0.5, 0.5, Color8u(0,0,0));
+	circle->draw();
+	if(click % 2 ==1){
 		//foo.highLight(foo.getNearest(x,y), Color8u(255,255,255));
 		circle->draw();
 	}

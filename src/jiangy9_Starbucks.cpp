@@ -179,8 +179,8 @@ void jiangy9_Starbucks::traversal(node* r, uint8_t* dataArray, Color8u color){
 }
 
 void jiangy9_Starbucks::highLight(Entry* e, Color8u color){
-	dataArray[4*(((int)((1-e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))] = color.r;
-	dataArray[4*(((int)((1-e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+1] = color.g;
-	dataArray[4*(((int)((1-e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+2] = color.b;
-	dataArray[4*(((int)((1-e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+3] = 255;
+	dataArray[4*(((int)((e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))] = color.r;
+	dataArray[4*(((int)((e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+1] = color.g;
+	dataArray[4*(((int)((e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+2] = color.b;
+	dataArray[4*(((int)((e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+3] = 255;
 }
