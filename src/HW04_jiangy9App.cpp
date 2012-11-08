@@ -36,7 +36,8 @@ class HW04_jiangy9App : public AppBasic {
 		int click;
 		double x;
 		double y;
-		Circle* circle;
+		Circle* circle1;
+		Circle* circle2;
 		uint8_t* dataArray;
 };
 
@@ -106,17 +107,14 @@ void HW04_jiangy9App::setup()
 	entries = NULL;
 	length = 0;
 	click = 0;
-	circle = new Circle();
+	circle1 = new Circle();
+	circle2 = new Circle();
 	x = 0.0;
 	y = 0.0;
 	
 	readFromFile(&entries, &length);
 	foo.build(entries, length);
 	delete [] entries;
-
-	
-
-	//console() << foo.getNearest(0.5,0.5)->identifier << std::endl;
 }
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )
@@ -125,29 +123,25 @@ void HW04_jiangy9App::mouseDown( MouseEvent event )
 		x = (double)event.getX()/windowWidth;
 		y = 1-((double)event.getY()/windowHeight);
 
-		circle->setCircle((*mySurface).getData(), 10.0f, (float)(foo.getNearest(x,y)->x), (float)(foo.getNearest(x,y)->y), Color8u(0,0,0));
-		console() << foo.getNearest(x,y)->x << " " << foo.getNearest(x,y)->y << std::endl;		
-
+		circle1->setCircle((*mySurface).getData(), 3.0f, (float)(foo.getNearest(x,y)->x), (float)(foo.getNearest(x,y)->y), Color8u(0,0,0));
+		//console() << foo.getNearest(x,y)->x << " " << foo.getNearest(x,y)->y << std::endl;
 		click++;
+		
 	}
 }
 
 void HW04_jiangy9App::update()
 {
 	dataArray = (*mySurface).getData();
-	circle->setCircle(dataArray, 10.0f, 0.5, 0.5, Color8u(0,0,0));
-	circle->draw();
-	if(click % 2 ==1){
-		//foo.highLight(foo.getNearest(x,y), Color8u(255,255,255));
-		circle->draw();
-	}
+	if(click!=0)
+		circle1->draw();
 	
 }
 
 void HW04_jiangy9App::draw()
-{
-	//draw map of the U.S.	
+{	
 	gl::draw(*mySurface);
+	
 	   
 }
 

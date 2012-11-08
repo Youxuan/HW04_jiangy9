@@ -5,6 +5,7 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
+#include "Circle.h"
 
 using namespace std;
 using namespace ci;
@@ -169,11 +170,21 @@ void jiangy9_Starbucks::mix(Entry* entries, int length){
 }
 
 void jiangy9_Starbucks::traversal(node* r, uint8_t* dataArray, Color8u color){
+	
 	if(r==NULL)
 		return;
 	else{
 		traversal(r->left,dataArray,color);
-		highLight(r->data, color);
+	    for(int y=0; y<=windowHeight; y++){
+			for(int x=0;x<=windowWidth; x++){
+				if ((x-((r->data->x)*windowWidth))*(x-((r->data->x)*windowWidth)) + (y-((1-(r->data->y))*windowHeight))*(y-((1-(r->data->y))*windowHeight)) <= 3.0f*3.0f){
+					dataArray[4*(x + y * windowWidth)] = color.r;
+					dataArray[4*(x + y * windowWidth)+1] = color.g;
+					dataArray[4*(x + y * windowWidth)+2] = color.b;
+					dataArray[4*(x + y * windowWidth)+3] = 255;
+				}
+			}
+		}
 		traversal(r->right,dataArray,color);
 	}
 }

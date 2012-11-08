@@ -7,6 +7,7 @@
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
+#include "Circle.h"
 
 using namespace std;
 using namespace ci;
@@ -32,6 +33,7 @@ class jiangy9_Starbucks : public Starbucks{
 		void setColor(Color8u newColor);
 		void setArray(uint8_t* newDataArray);
 		void highLight(Entry* e, Color8u color);
+		
 		
 		virtual Entry* getNearest(double x, double y);
 		virtual void build(Entry* e, int n);
