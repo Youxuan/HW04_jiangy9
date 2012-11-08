@@ -11,6 +11,7 @@
 #include "cinder/Rand.h"
 #include "cinder/ImageIo.h"
 #include "cinder/gl/Texture.h"
+#include "Circle.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -32,7 +33,10 @@ class HW04_jiangy9App : public AppBasic {
 		int length;
 		jiangy9_Starbucks foo;
 		Surface* mySurface;
-
+		int click;
+		double x;
+		double y;
+		Circle* circle;
 };
 
 void HW04_jiangy9App::prepareSettings(Settings* settings){
@@ -92,18 +96,18 @@ void HW04_jiangy9App::readFromFile(Entry** entries, int* length){
 void HW04_jiangy9App::setup()
 {
 	mySurface = new Surface(windowWidth, windowHeight, true);
+	*mySurface = loadImage("../resources/USA_Map.png");
+	
 	foo.setColor(Color8u(237,28,36));
 	uint8_t* dataArray = (*mySurface).getData();
-	//set every pixel on surface transparent in order to display the map
-	for(int x=0;x<windowWidth;x++){
-		for(int y=0;y<windowHeight;y++)
-			dataArray[4*(x + y * windowWidth)+3] = 0;
-	}
-
 	foo.setArray(dataArray);
-	Rand::randomize();
+
 	entries = NULL;
-	length = 0; //length is from 0 to 7654(real length is 1 to 7655)
+	length = 0;
+	click = 0;
+	circle = new Circle();
+	x = 0.0;
+	y = 0.0;
 	
 	readFromFile(&entries, &length);
 	foo.build(entries, length);
@@ -116,18 +120,32 @@ void HW04_jiangy9App::setup()
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )
 {
+	if(event.isLeftDown()){
+		//circle->setCircle((*mySurface).getData(), 10.0f, x, y, Color8u(0,0,0));
+		
+		x = (double)event.getX();
+		y = (double)event.getY();
+
+		circle->setCircle((*mySurface).getData(), 10.0f, (float)(foo.getNearest(x,y)->x), (float)(foo.getNearest(x,y)->y), Color8u(0,0,0));
+		console() << x << " " << y << std::endl;
+		
+
+		click++;
+	}
 }
 
 void HW04_jiangy9App::update()
 {
+	if(click%2==1){
+		//foo.highLight(foo.getNearest(x,y), Color8u(255,255,255));
+		circle->draw();
+	}
 	
 }
 
 void HW04_jiangy9App::draw()
 {
-	//draw map of the U.S.
-	gl::Texture myTexture( loadImage( loadResource( RES_MAP ) ) );
-	gl::draw(myTexture);
+	//draw map of the U.S.	
 	gl::draw(*mySurface);
 	   
 }

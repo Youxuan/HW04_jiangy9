@@ -173,10 +173,14 @@ void jiangy9_Starbucks::traversal(node* r, uint8_t* dataArray, Color8u color){
 		return;
 	else{
 		traversal(r->left,dataArray,color);
-		dataArray[4 * (((int)((1-r->data->x)*windowWidth) + (int)((1-r->data->y)*windowHeight) * windowWidth))] = color.r;
-		dataArray[4 * (((int)((1-r->data->x)*windowWidth) + (int)((1-r->data->y)*windowHeight) * windowWidth))+1] = color.g;
-		dataArray[4 * (((int)((1-r->data->x)*windowWidth) + (int)((1-r->data->y)*windowHeight) * windowWidth))+2] = color.b;
-		dataArray[4 * (((int)((1-r->data->x)*windowWidth) + (int)((1-r->data->y)*windowHeight) * windowWidth))] = 255;
+		highLight(r->data, color);
 		traversal(r->right,dataArray,color);
 	}
+}
+
+void jiangy9_Starbucks::highLight(Entry* e, Color8u color){
+	dataArray[4*(((int)((1-e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))] = color.r;
+	dataArray[4*(((int)((1-e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+1] = color.g;
+	dataArray[4*(((int)((1-e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+2] = color.b;
+	dataArray[4*(((int)((1-e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+3] = 255;
 }

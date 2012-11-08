@@ -21,6 +21,9 @@
     <ClCompile Include="..\src\jiangy9_Starbucks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Circle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -32,6 +35,9 @@
     <ClInclude Include="..\include\jiangy9_Starbucks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Circle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
@@ -39,7 +45,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\resources\USA_Map.jpg">
+    <None Include="..\resources\USA_Map.png">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
