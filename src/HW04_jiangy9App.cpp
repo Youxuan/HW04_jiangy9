@@ -25,6 +25,7 @@ class HW04_jiangy9App : public AppBasic {
 		void draw();
 		void prepareSettings(Settings* settings);
 		void readFromFile(Entry** entries, int* length); 
+		void paintWindow();
 
 	private:
 		static const int windowWidth = 1024;
@@ -39,7 +40,24 @@ class HW04_jiangy9App : public AppBasic {
 		Circle* circle1;
 		Circle* circle2;
 		uint8_t* dataArray;
+		double target_x;
+		double target_y;
 };
+
+void HW04_jiangy9App::paintWindow(){
+	for(int x=0;x<windowWidth;x++){
+		for(int y=0;y<windowHeight;y++){
+			double target_x = foo.getNearest((double)x/windowWidth,1.0-(double)y/windowHeight)->x;
+			double target_y = foo.getNearest((double)x/windowWidth,1.0-(double)y/windowHeight)->y;
+			
+			dataArray[4*(x + y * windowWidth)] = dataArray[4*((int)target_x + (int)target_y * windowWidth)];
+			dataArray[4*(x + y * windowWidth)+1] = dataArray[4*((int)target_x + (int)target_y * windowWidth)+1];
+			dataArray[4*(x + y * windowWidth)+2] = dataArray[4*((int)target_x + (int)target_y * windowWidth)+2];
+			dataArray[4*(x + y * windowWidth)+3] = 255;
+
+		}
+	}
+}
 
 void HW04_jiangy9App::prepareSettings(Settings* settings){
 	settings->setWindowSize(windowWidth, windowHeight);
@@ -108,6 +126,8 @@ void HW04_jiangy9App::setup()
 	click = 0;
 	x = 0.0;
 	y = 0.0;
+	target_x = 0.0;
+	target_y = 0.0;
 
 	entries = NULL;
 	circle1 = new Circle();
@@ -135,9 +155,10 @@ void HW04_jiangy9App::mouseDown( MouseEvent event )
 void HW04_jiangy9App::update()
 {
 	dataArray = (*mySurface).getData();
-	if(click!=0)
+	if(click!=0){
 		circle1->draw();
-	
+	}
+	paintWindow();
 	
 }
 
