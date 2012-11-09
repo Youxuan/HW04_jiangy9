@@ -100,21 +100,23 @@ void HW04_jiangy9App::setup()
 	mySurface = new Surface(windowWidth, windowHeight, true);
 	*mySurface = loadImage("../resources/USA_Map.png");
 	
-	foo.setColor(Color8u(237,28,36));
+	//foo.setColor();
 	uint8_t* dataArray = (*mySurface).getData();
 	foo.setArray(dataArray);
 
-	entries = NULL;
 	length = 0;
 	click = 0;
-	circle1 = new Circle();
-	circle2 = new Circle();
 	x = 0.0;
 	y = 0.0;
+
+	entries = NULL;
+	circle1 = new Circle();
+	circle2 = new Circle();
 	
 	readFromFile(&entries, &length);
 	foo.build(entries, length);
 	delete [] entries;
+
 }
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )
@@ -136,10 +138,12 @@ void HW04_jiangy9App::update()
 	if(click!=0)
 		circle1->draw();
 	
+	
 }
 
 void HW04_jiangy9App::draw()
 {	
+	gl::enableAlphaBlending();
 	gl::draw(*mySurface);
 	
 	   

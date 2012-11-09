@@ -6,6 +6,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/gl/Texture.h"
 #include "Circle.h"
+#include "cinder/Rand.h"
 
 using namespace std;
 using namespace ci;
@@ -22,8 +23,10 @@ node::node(Entry* e){
 	data = e;
 }
 
-void jiangy9_Starbucks::setColor(Color8u newColor){
-	color = newColor;
+void jiangy9_Starbucks::setColor(){
+	color.r = Rand::randInt(0,256);
+	color.g = Rand::randInt(0,256);
+	color.b = Rand::randInt(0,256);
 }
 
 void jiangy9_Starbucks::setArray(uint8_t* newDataArray){
@@ -57,6 +60,7 @@ node* jiangy9_Starbucks::insert(Entry* e, node* r, bool isXlevel){
 //build the entire K-d tree
 void jiangy9_Starbucks::build(Entry* e, int n){
 	Entry* newEntries = new Entry[n];
+
 	for(int i=0;i<n;i++)
 		newEntries[i] = e[i];
 	e = newEntries;
@@ -65,7 +69,8 @@ void jiangy9_Starbucks::build(Entry* e, int n){
 	for(int i=1;i<n;i++){
 		insert(&e[i],r,true); 
 	}
-	traversal(r, dataArray, color);
+
+	traversal(r, dataArray);
 }
 
 //calculate distance between given location and Starbucks in current node
@@ -169,12 +174,12 @@ void jiangy9_Starbucks::mix(Entry* entries, int length){
 	}
 }
 
-void jiangy9_Starbucks::traversal(node* r, uint8_t* dataArray, Color8u color){
-	
+void jiangy9_Starbucks::traversal(node* r, uint8_t* dataArray){
 	if(r==NULL)
 		return;
 	else{
-		traversal(r->left,dataArray,color);
+		traversal(r->left,dataArray);
+		setColor();
 	    for(int y=0; y<=windowHeight; y++){
 			for(int x=0;x<=windowWidth; x++){
 				if ((x-((r->data->x)*windowWidth))*(x-((r->data->x)*windowWidth)) + (y-((1-(r->data->y))*windowHeight))*(y-((1-(r->data->y))*windowHeight)) <= 3.0f*3.0f){
@@ -185,13 +190,8 @@ void jiangy9_Starbucks::traversal(node* r, uint8_t* dataArray, Color8u color){
 				}
 			}
 		}
-		traversal(r->right,dataArray,color);
+
+		traversal(r->right,dataArray);
 	}
 }
 
-void jiangy9_Starbucks::highLight(Entry* e, Color8u color){
-	dataArray[4*(((int)((e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))] = color.r;
-	dataArray[4*(((int)((e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+1] = color.g;
-	dataArray[4*(((int)((e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+2] = color.b;
-	dataArray[4*(((int)((e->x)*windowWidth) + (int)((1-e->y)*windowHeight) * windowWidth))+3] = 255;
-}

@@ -26,14 +26,13 @@ class node{
 class jiangy9_Starbucks : public Starbucks{
 	public:
 		node* insert(Entry* e, node* r, bool isXlevel);
-		void traversal(node* r, uint8_t* dataArray, Color8u color);
+		void traversal(node* r, uint8_t* dataArray);
 		double getDistance(double x, double y, node* r);
 		node* checkOneSubtree(double x, double y, node* r, bool isXlevel);
 		void mix(Entry* entries, int length);
-		void setColor(Color8u newColor);
+		void setColor();
 		void setArray(uint8_t* newDataArray);
 		void highLight(Entry* e, Color8u color);
-		
 		
 		virtual Entry* getNearest(double x, double y);
 		virtual void build(Entry* e, int n);
