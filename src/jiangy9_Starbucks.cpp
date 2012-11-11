@@ -12,6 +12,14 @@ using namespace std;
 using namespace ci;
 using namespace ci::app;
 
+LucyEntry::LucyEntry(){
+	identifier = "";
+	x = 0.0;
+	y = 0.0;
+	pop_old = 0.0;
+	pop_new = 0.0;
+}
+
 node::node(){
 	left = NULL;
 	right = NULL;
@@ -27,14 +35,6 @@ population::population(){
 	pop_number = 0.0;
 	pop_x = 0.0;
 	pop_y = 0.0;
-}
-
-LucyEntry::LucyEntry(){
-	identifier = "";
-	x = 0.0;
-	y = 0.0;
-	pop_old = 0.0;
-	pop_new = 0.0;
 }
 
 void jiangy9_Starbucks::setColor(){
@@ -73,10 +73,10 @@ node* jiangy9_Starbucks::insert(Entry* e, node* r, bool isXlevel){
 
 //build the entire K-d tree
 void jiangy9_Starbucks::build(Entry* e, int n){
-	Entry* newEntries = new Entry[n];
+	LucyEntry* newEntries = new LucyEntry[n];
 
 	for(int i=0;i<n;i++)
-		newEntries[i] = e[i];
+		newEntries[i] = ((LucyEntry*)e)[i];
 	e = newEntries;
 
 	mix(e, n);

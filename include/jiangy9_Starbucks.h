@@ -59,7 +59,6 @@ class jiangy9_Starbucks : public Starbucks{
 		static const int windowWidth = 1024;
 		static const int windowHeight = 1024;
 		Entry* e;
-		LucyEntry* l;
 		node* r;
 		bool isXlevel;
 		double x;
