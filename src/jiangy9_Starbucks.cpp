@@ -79,7 +79,7 @@ void jiangy9_Starbucks::build(Entry* e, int n){
 		newEntries[i] = ((LucyEntry*)e)[i];
 	e = newEntries;
 
-	mix(e, n);
+	mix((LucyEntry*)e, n);
 	r = new node(e);
 	for(int i=1;i<n;i++){
 		insert(&e[i],r,true); 
@@ -179,11 +179,11 @@ Entry* jiangy9_Starbucks::getNearest(double x, double y){
 	return checkOneSubtree(x,y,r,true)->data;
 }
 
-void jiangy9_Starbucks::mix(Entry* entries, int length){
+void jiangy9_Starbucks::mix(LucyEntry* entries, int length){
 	int pick = 0;
 	for(int i=0;i<length-1;i++){
 		pick = cinder::Rand::randInt(i+1,length);
-		Entry temp = entries[i];
+		LucyEntry temp = entries[i];
 		entries[i] = entries[pick];
 		entries[pick] = temp;
 	}

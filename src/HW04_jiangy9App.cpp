@@ -41,8 +41,7 @@ class HW04_jiangy9App : public AppBasic {
 		double x;
 		double y;
 		int press;
-		Circle* circle1;
-		Circle* circle2;
+		//Circle* circle1;
 		uint8_t* dataArray;
 		double target_x;
 		double target_y;
@@ -61,52 +60,35 @@ void HW04_jiangy9App::paintPopulation(LucyEntry* lucyEntry, int length, uint8_t*
 	double y = 0.0;
 	Circle* circle = new Circle();
 	for(int i=0;i<=length;i++){
-		percentage = (lucyEntry[0].pop_new - lucyEntry[0].pop_old) / lucyEntry[0].pop_old;
-		console() << percentage << std::endl;
+		if(lucyEntry[i].pop_old!=0){
+			percentage = (lucyEntry[i].pop_new - lucyEntry[i].pop_old) / lucyEntry[i].pop_old;
+			console() << percentage << std::endl;
 
-		x = lucyEntry[0].x * windowWidth;
-		y = (1-lucyEntry[0].y) * windowHeight;
+			x = lucyEntry[i].x * windowWidth;
+			y = (1-lucyEntry[i].y) * windowHeight;
 
-		circle->setCircle(dataArray, 100.0f, (float)x, (float)y, Color8u(0,0,0));
-		circle->draw();
+			circle->setCircle(dataArray, 10.0f, (float)x, (float)y, Color8u((int)237*percentage,(int)28*percentage,(int)36*percentage));
+			circle->draw();
+		}
 	}
 }
 
 void HW04_jiangy9App::calculatePopulation(population* old_pop, int old_pop_length, population* new_pop, int new_pop_length, LucyEntry* lucyEntry, jiangy9_Starbucks foo, int length){
-	/*
-	for(int i=0;i<=new_pop_length;i++){
-		Entry* neareast = foo.getNearest(new_pop[i].pop_x, new_pop[i].pop_y);
-		for(int j=0;j<=length;j++){
-			if((lucyEntry[j]).identifier.compare(neareast->identifier)==0){
-				(lucyEntry[j]).pop_new += new_pop[i].pop_number;
-			}
-		} 
-	}
-
-	for(int i=0;i<=old_pop_length;i++){
-		Entry* neareast2 = foo.getNearest(old_pop[i].pop_x, old_pop[i].pop_y);
-		for(int j=0;j<=length;j++){
-			if((lucyEntry[j]).identifier.compare(neareast2->identifier)==0){
-				(lucyEntry[j]).pop_old += old_pop[i].pop_number;
-			}
-		} 
-	}
-	*/
-
 	for(int i=0; i<=new_pop_length; i++){
-		(LucyEntry*)(foo.getNearest(new_pop[i].pop_x, new_pop[i].pop_y))->pop_new += new_pop[i].pop_number;
+		((LucyEntry*)(foo.getNearest(new_pop[i].pop_x, new_pop[i].pop_y)))->pop_new += new_pop[i].pop_number;
+		console() << i << std::endl;
 	}
 
 	for(int i=0; i<=old_pop_length; i++){
-		(LucyEntry*)(foo.getNearest(old_pop[i].pop_x, old_pop[i].pop_y))->pop_old += old_pop[i].pop_number;
+		((LucyEntry*)(foo.getNearest(old_pop[i].pop_x, old_pop[i].pop_y)))->pop_old += old_pop[i].pop_number;
+		console() << i <<std::endl;
 	}
-
 }
 
 void HW04_jiangy9App::readPopulation(population** old_pop, int* old_pop_length, population** new_pop, int* new_pop_length){
 	//get number of items in old census data
 	
-	ifstream fileInput_1("../resources/Test_old.csv"); //Census_2000.csv
+	ifstream fileInput_1("../resources/Census_2000.csv"); //Census_2000.csv
 	if(!fileInput_1)
 		console() << "Cannot open folder!" << std::endl;
 
@@ -134,7 +116,7 @@ void HW04_jiangy9App::readPopulation(population** old_pop, int* old_pop_length, 
 	*old_pop_length -= 1;
 	console() << *old_pop_length << std::endl;
 
-	ifstream fileInput_2("../resources/Test_old.csv");
+	ifstream fileInput_2("../resources/Census_2000.csv");
 	*old_pop = new population[(*old_pop_length)+1];
 	for(int i=0;i<=*old_pop_length;i++){
 		fileInput_2 >> number;
@@ -162,7 +144,7 @@ void HW04_jiangy9App::readPopulation(population** old_pop, int* old_pop_length, 
 	
 
 	//get number of items in new census data
-	ifstream fileInput_3("../resources/Test_new.csv"); //Census_2010.csv
+	ifstream fileInput_3("../resources/Census_2010.csv"); //Census_2010.csv
 	if(!fileInput_3)
 		console() << "Cannot open folder!" << std::endl;
 	while(!fileInput_3.eof()){
@@ -186,7 +168,7 @@ void HW04_jiangy9App::readPopulation(population** old_pop, int* old_pop_length, 
 	*new_pop_length -= 1;
 	console() << *new_pop_length << std::endl;
 	
-	ifstream fileInput_4("../resources/Test_new.csv");
+	ifstream fileInput_4("../resources/Census_2010.csv");
 	*new_pop = new population[(*new_pop_length+1)];
 	for(int i=0;i<=*new_pop_length;i++){
 		fileInput_4 >> number;
@@ -288,8 +270,6 @@ void HW04_jiangy9App::setup()
 
 	entries = NULL;
 	lucyEntry = NULL;
-	circle1 = new Circle();
-	circle2 = new Circle();
 	
 	old_pop = NULL;
 	old_pop_length = 0;
@@ -297,14 +277,11 @@ void HW04_jiangy9App::setup()
     new_pop_length = 0;
 
 	readFromFile(&length, &lucyEntry);
-	foo.build(lucyEntry, length+1);
-	delete [] entries;
-	
+	foo.build(lucyEntry, length+1);	
 
-	//readPopulation(&old_pop, &old_pop_length, &new_pop, &new_pop_length);
-	//calculatePopulation(old_pop, old_pop_length, new_pop, new_pop_length, lucyEntry, foo, length);
+	readPopulation(&old_pop, &old_pop_length, &new_pop, &new_pop_length);
+	calculatePopulation(old_pop, old_pop_length, new_pop, new_pop_length, lucyEntry, foo, length);
 	
-	//console() << lucyEntry[0].pop_new << " " << lucyEntry[0].pop_old << std::endl;
 
 }
 
@@ -313,9 +290,6 @@ void HW04_jiangy9App::mouseDown( MouseEvent event )
 	if(event.isLeftDown()){		
 		x = (double)event.getX()/windowWidth;
 		y = 1-((double)event.getY()/windowHeight);
-
-		circle1->setCircle((*mySurface).getData(), 3.0f, (float)(foo.getNearest(x,y)->x), (float)(foo.getNearest(x,y)->y), Color8u(0,0,0));
-		//console() << foo.getNearest(x,y)->x << " " << foo.getNearest(x,y)->y << std::endl;
 		click++;
 		
 	}
@@ -330,11 +304,13 @@ void HW04_jiangy9App::update()
 {
 	dataArray = (*mySurface).getData();
 	if(click!=0){
+		Circle* circle1 = new Circle();
+		circle1->setCircle((*mySurface).getData(), 5.0f, (float)(foo.getNearest(x,y)->x), (float)(foo.getNearest(x,y)->y), Color8u(0,0,0));
 		circle1->draw();
 	}
 
-	//if(press%2==1)
-		//paintPopulation(lucyEntry, length, dataArray);
+	if(press%2==1)
+		paintPopulation(lucyEntry, length, dataArray);
 	
 	
 }

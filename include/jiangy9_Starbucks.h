@@ -47,7 +47,7 @@ class jiangy9_Starbucks : public Starbucks{
 		double getDistance(double x, double y, node* r);
 		node* checkOneSubtree(double x, double y, node* r, bool isXlevel);
 
-		void mix(Entry* entries, int length);
+		void mix(LucyEntry* entries, int length);
 		void setColor();
 		void setArray(uint8_t* newDataArray);
 		
