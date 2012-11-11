@@ -26,9 +26,9 @@ class HW04_jiangy9App : public AppBasic {
 		void update();
 		void draw();
 		void prepareSettings(Settings* settings);
-		void readFromFile(int* length, LucyEntry** lucyEntry); 
+		void readFromFile(int* length, Entry** entries); 
 		void readPopulation(population** old_pop, int* old_pop_length, population** new_pop, int* new_pop_length);
-		void calculatePopulation(population* old_pop, int old_pop_length, population* new_pop, int new_pop_length, LucyEntry* lucyEntry, jiangy9_Starbucks foo, int length);
+		void calculatePopulation(population* old_pop, int old_pop_length, population* new_pop, int new_pop_length, jiangy9_Starbucks foo);
 		void paintPopulation(LucyEntry* lucyEntry, int length, uint8_t* dataArray2);
 
 	private:
@@ -54,8 +54,6 @@ class HW04_jiangy9App : public AppBasic {
 		int new_pop_length;
 
 		Circle* circle1;
-
-		LucyEntry* lucyEntry;
 
 		Font mFont;
 		Font mFont2;
@@ -105,7 +103,7 @@ void HW04_jiangy9App::paintPopulation(LucyEntry* lucyEntry, int length, uint8_t*
 	}
 }
 
-void HW04_jiangy9App::calculatePopulation(population* old_pop, int old_pop_length, population* new_pop, int new_pop_length, LucyEntry* lucyEntry, jiangy9_Starbucks foo, int length){
+void HW04_jiangy9App::calculatePopulation(population* old_pop, int old_pop_length, population* new_pop, int new_pop_length, jiangy9_Starbucks foo){
 	
 	for(int i=0; i<=new_pop_length; i++){
         ((LucyEntry*)(foo.getNearest(new_pop[i].pop_x, new_pop[i].pop_y)))->pop_new += new_pop[i].pop_number;
@@ -114,28 +112,6 @@ void HW04_jiangy9App::calculatePopulation(population* old_pop, int old_pop_lengt
     for(int i=0; i<=old_pop_length; i++){
         ((LucyEntry*)(foo.getNearest(old_pop[i].pop_x, old_pop[i].pop_y)))->pop_old += old_pop[i].pop_number;
     }
-	
-	/*
-
-	for(int i=0;i<=new_pop_length;i++){
-		Entry* neareast = foo.getNearest(new_pop[i].pop_x, new_pop[i].pop_y);
-		for(int j=0;j<=length;j++){
-			if((lucyEntry[j]).identifier.compare(neareast->identifier)==0){
-				(lucyEntry[j]).pop_new += new_pop[i].pop_number;
-			}
-		} 
-	}
-
-	for(int i=0;i<=old_pop_length;i++){
-		Entry* neareast2 = foo.getNearest(old_pop[i].pop_x, old_pop[i].pop_y);
-		for(int j=0;j<=length;j++){
-			if((lucyEntry[j]).identifier.compare(neareast2->identifier)==0){
-				(lucyEntry[j]).pop_old += old_pop[i].pop_number;
-			}
-		} 
-	}
-
-	*/
 
 }
 
@@ -261,7 +237,7 @@ void HW04_jiangy9App::prepareSettings(Settings* settings){
 }
 
 //read data from file and store data into an array
-void HW04_jiangy9App::readFromFile(int* length, LucyEntry** lucyEntry){
+void HW04_jiangy9App::readFromFile(int* length, Entry** entries){
 	ifstream fileInput_1("../resources/Starbucks_2006.csv");
 	if(!fileInput_1)
 		console() << "Cannot open folder!" << std::endl;
@@ -282,19 +258,19 @@ void HW04_jiangy9App::readFromFile(int* length, LucyEntry** lucyEntry){
 	*length -= 1;
 
 	ifstream fileInput_2("../resources/Starbucks_2006.csv");
-	*lucyEntry = new LucyEntry[(*length)+1];
+	*entries = new Entry[(*length)+1];
 
 	for(int i=0;i<=*length;i++){
 		getline(fileInput_2,line,',');
-		(*lucyEntry)[i].identifier = line;
+		(*entries)[i].identifier = line;
 		double l_x;
 		fileInput_2 >> l_x;
-		(*lucyEntry)[i].x = l_x;
+		(*entries)[i].x = l_x;
 		char comma;
 		fileInput_2.get(comma);
 		double l_y;
 		fileInput_2 >> l_y;
-		(*lucyEntry)[i].y = l_y;
+		(*entries)[i].y = l_y;
 	}
 	fileInput_2.close();
 	
@@ -323,21 +299,18 @@ void HW04_jiangy9App::setup()
 	circle1 = new Circle();
 
 	entries = NULL;
-	lucyEntry = NULL;
 	
 	old_pop = NULL;
 	old_pop_length = 0;
 	new_pop = NULL;
     new_pop_length = 0;
 
-	readFromFile(&length, &lucyEntry);
-	foo.build(lucyEntry, length+1);	
+	readFromFile(&length, &entries);
+	foo.build(entries, length+1);	
 
 	readPopulation(&old_pop, &old_pop_length, &new_pop, &new_pop_length);
-	calculatePopulation(old_pop, old_pop_length, new_pop, new_pop_length, lucyEntry, foo, length);
+	calculatePopulation(old_pop, old_pop_length, new_pop, new_pop_length, foo);
 	foo.paint(dataArray2);
-
-	//paintPopulation(lucyEntry, length, dataArray2);
 }
 
 void HW04_jiangy9App::mouseDown( MouseEvent event )

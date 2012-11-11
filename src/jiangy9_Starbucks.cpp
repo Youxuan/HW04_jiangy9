@@ -76,14 +76,16 @@ node* jiangy9_Starbucks::insert(Entry* e, node* r, bool isXlevel){
 void jiangy9_Starbucks::build(Entry* e, int n){
 	LucyEntry* newEntries = new LucyEntry[n];
 
-	for(int i=0;i<n;i++)
-		newEntries[i] = ((LucyEntry*)e)[i];
-	e = newEntries;
+	for(int i=0;i<n;i++){
+		newEntries[i].identifier = e[i].identifier;
+		newEntries[i].x = e[i].x;
+		newEntries[i].y = e[i].y;
+	}
 
-	mix((LucyEntry*)e, n);
-	r = new node(e);
+	mix(newEntries, n);
+	r = new node(newEntries);
 	for(int i=1;i<n;i++){
-		insert(&e[i],r,true); 
+		insert(&newEntries[i],r,true); 
 	}
 
 	traversal(r, dataArray);
@@ -221,9 +223,7 @@ void jiangy9_Starbucks::paintPopulation(node* r, uint8_t* dataArray2){
 		double x = 0.0;
 		double y = 0.0;
 		if(((LucyEntry*)(r->data))->pop_old!=0){
-			//console() << ((LucyEntry*)(r->data))->identifier << std::endl;
 			percentage = (((LucyEntry*)(r->data))->pop_new - ((LucyEntry*)(r->data))->pop_old) / ((LucyEntry*)(r->data))->pop_old;
-			//console() << percentage << std::endl;
 
 			x = ((LucyEntry*)(r->data))->x * windowWidth;
 			y = (1-((LucyEntry*)(r->data))->y) * windowHeight;
