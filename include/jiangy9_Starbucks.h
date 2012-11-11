@@ -23,16 +23,34 @@ class node{
         node(Entry* e);
 };
 
+class population{
+	public:
+		double pop_number;
+		double pop_x;
+		double pop_y;
+
+		population();
+};
+
+class LucyEntry : public Entry{
+	public:
+		double pop_old;
+		double pop_new;
+
+		LucyEntry();
+};
+
 class jiangy9_Starbucks : public Starbucks{
 	public:
 		node* insert(Entry* e, node* r, bool isXlevel);
 		void traversal(node* r, uint8_t* dataArray);
 		double getDistance(double x, double y, node* r);
 		node* checkOneSubtree(double x, double y, node* r, bool isXlevel);
+
 		void mix(Entry* entries, int length);
 		void setColor();
 		void setArray(uint8_t* newDataArray);
-		void highLight(Entry* e, Color8u color);
+		
 		
 		virtual Entry* getNearest(double x, double y);
 		virtual void build(Entry* e, int n);
@@ -41,6 +59,7 @@ class jiangy9_Starbucks : public Starbucks{
 		static const int windowWidth = 1024;
 		static const int windowHeight = 1024;
 		Entry* e;
+		LucyEntry* l;
 		node* r;
 		bool isXlevel;
 		double x;

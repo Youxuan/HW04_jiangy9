@@ -23,6 +23,20 @@ node::node(Entry* e){
 	data = e;
 }
 
+population::population(){
+	pop_number = 0.0;
+	pop_x = 0.0;
+	pop_y = 0.0;
+}
+
+LucyEntry::LucyEntry(){
+	identifier = "";
+	x = 0.0;
+	y = 0.0;
+	pop_old = 0.0;
+	pop_new = 0.0;
+}
+
 void jiangy9_Starbucks::setColor(){
 	color.r = Rand::randInt(0,256);
 	color.g = Rand::randInt(0,256);
@@ -64,6 +78,7 @@ void jiangy9_Starbucks::build(Entry* e, int n){
 	for(int i=0;i<n;i++)
 		newEntries[i] = e[i];
 	e = newEntries;
+
 	mix(e, n);
 	r = new node(e);
 	for(int i=1;i<n;i++){
