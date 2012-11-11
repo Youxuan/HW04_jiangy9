@@ -30,7 +30,6 @@ class HW04_jiangy9App : public AppBasic {
 		void readPopulation(population** old_pop, int* old_pop_length, population** new_pop, int* new_pop_length);
 		void calculatePopulation(population* old_pop, int old_pop_length, population* new_pop, int new_pop_length, LucyEntry* lucyEntry, jiangy9_Starbucks foo, int length);
 		void paintPopulation(LucyEntry* lucyEntry, int length, uint8_t* dataArray2);
-		void paintCencus(population* old_pop, int old_pop_length, population* new_pop, int new_pop_length, uint8_t* dataArray3);
 
 	private:
 		static const int windowWidth = 1024;
@@ -40,14 +39,12 @@ class HW04_jiangy9App : public AppBasic {
 		jiangy9_Starbucks foo;
 		Surface* mySurface1;
 		Surface* mySurface2;
-		Surface* mySurface3;
 		int click;
 		double x;
 		double y;
 		int press;
 		uint8_t* dataArray1;
 		uint8_t* dataArray2;
-		uint8_t* dataArray3;
 		double target_x;
 		double target_y;
 
@@ -58,8 +55,6 @@ class HW04_jiangy9App : public AppBasic {
 
 		Circle* circle1;
 
-		int pressO;
-
 		LucyEntry* lucyEntry;
 
 		Font mFont;
@@ -67,26 +62,6 @@ class HW04_jiangy9App : public AppBasic {
 		gl::TextureFontRef	mTextureFont;
 		gl::TextureFontRef	mTextureFont2;
 };
-
-void HW04_jiangy9App::paintCencus(population* old_pop, int old_pop_length, population* new_pop, int new_pop_length, uint8_t* dataArray3){
-	int new_max = 37452;
-	for(int i=0; i<=new_pop_length; i++){
-		double percentage = new_pop[i].pop_number/new_max;
-		double x = new_pop[i].pop_x * 1024;
-		double y = (1-new_pop[i].pop_y) * 1024;
-		for(int yy=0; yy<=1024; yy++){
-				for(int xx=0;xx<=1024; xx++){
-					if ((xx-x)*(xx-x) + (yy-y)*(yy-y) <= 3.0f*3.0f){
-						dataArray3[4*(xx + yy * 1024)] = (int)(237*percentage);
-						dataArray3[4*(xx + yy * 1024)+1] = (int)(28*percentage);
-						dataArray3[4*(xx + yy * 1024)+2] = (int)(36*percentage);
-						dataArray3[4*(xx + yy * 1024)+3] = 255;
-					}
-				}
-			}
-	}
-
-}
 
 void HW04_jiangy9App::paintPopulation(LucyEntry* lucyEntry, int length, uint8_t* dataArray2){
 	double percentage = 0.0;
@@ -166,7 +141,7 @@ void HW04_jiangy9App::calculatePopulation(population* old_pop, int old_pop_lengt
 
 void HW04_jiangy9App::readPopulation(population** old_pop, int* old_pop_length, population** new_pop, int* new_pop_length){
 	
-	ifstream fileInput_1("../resources/Test_old.csv"); //Census_2000.csv
+	ifstream fileInput_1("../resources/Census_2000.csv"); //Census_2000.csv
 	if(!fileInput_1)
 		console() << "Cannot open folder!" << std::endl;
 
@@ -194,7 +169,7 @@ void HW04_jiangy9App::readPopulation(population** old_pop, int* old_pop_length, 
 	*old_pop_length -= 1;
 	console() << *old_pop_length << std::endl;
 
-	ifstream fileInput_2("../resources/Test_old.csv");
+	ifstream fileInput_2("../resources/Census_2000.csv");
 	*old_pop = new population[(*old_pop_length)+1];
 	for(int i=0;i<=*old_pop_length;i++){
 		fileInput_2 >> number;
@@ -223,7 +198,7 @@ void HW04_jiangy9App::readPopulation(population** old_pop, int* old_pop_length, 
 	
 
 	//get number of items in new census data
-	ifstream fileInput_3("../resources/Test_new.csv"); //Census_2010.csv
+	ifstream fileInput_3("../resources/Census_2010.csv"); //Census_2010.csv
 	if(!fileInput_3)
 		console() << "Cannot open folder!" << std::endl;
 	while(!fileInput_3.eof()){
@@ -247,7 +222,7 @@ void HW04_jiangy9App::readPopulation(population** old_pop, int* old_pop_length, 
 	*new_pop_length -= 1;
 	console() << *new_pop_length << std::endl;
 	
-	ifstream fileInput_4("../resources/Test_new.csv");
+	ifstream fileInput_4("../resources/Census_2010.csv");
 	*new_pop = new population[(*new_pop_length+1)];
 	for(int i=0;i<=*new_pop_length;i++){
 		fileInput_4 >> number;
@@ -332,13 +307,9 @@ void HW04_jiangy9App::setup()
 
 	mySurface2 = new Surface(windowWidth, windowHeight, true);
 	*mySurface2 = loadImage("../resources/USA_Map.png");
-
-	mySurface3 = new Surface(windowWidth, windowHeight, true);
-	*mySurface3 = loadImage("../resources/USA_Map.png");
 	
 	uint8_t* dataArray1 = (*mySurface1).getData();
 	uint8_t* dataArray2 = (*mySurface2).getData();
-	uint8_t* dataArray3 = (*mySurface3).getData();
 	foo.setArray(dataArray1);
 
 	length = 0;
@@ -348,7 +319,6 @@ void HW04_jiangy9App::setup()
 	target_x = 0.0;
 	target_y = 0.0;
 	press = 0;
-	pressO = 0;
 
 	circle1 = new Circle();
 
@@ -364,8 +334,6 @@ void HW04_jiangy9App::setup()
 	foo.build(lucyEntry, length+1);	
 
 	readPopulation(&old_pop, &old_pop_length, &new_pop, &new_pop_length);
-	//paintCencus(old_pop, old_pop_length, new_pop, new_pop_length, dataArray3);
-
 	calculatePopulation(old_pop, old_pop_length, new_pop, new_pop_length, lucyEntry, foo, length);
 	foo.paint(dataArray2);
 
@@ -386,8 +354,6 @@ void HW04_jiangy9App::mouseDown( MouseEvent event )
 void HW04_jiangy9App::keyDown( KeyEvent event ){
 	if(event.getChar()=='p')
 		press++;
-	if(event.getChar()=='o')
-		pressO++;
 }
 
 void HW04_jiangy9App::update()
@@ -395,7 +361,7 @@ void HW04_jiangy9App::update()
 	dataArray1 = (*mySurface1).getData();
 	if(click!=0){
 		Entry* entry = foo.getNearest(x,y);
-		circle1->setCircle((*mySurface1).getData(), 5.0f, (float)(entry->x), (float)(entry->y), Color8u(0,0,0));
+		circle1->setCircle((*mySurface1).getData(), 5.0f, (float)(entry->x), (float)(entry->y), Color8u(255,127,39));
 		
 		gl::color(Color8u(0,0,0));
 		Font mfont = Font("Arial", 40);
@@ -410,12 +376,10 @@ void HW04_jiangy9App::update()
 void HW04_jiangy9App::draw()
 {	
 	gl::enableAlphaBlending();
-	if(press%2==0 && pressO%2==0)
+	if(press%2==0)
 		gl::draw(*mySurface1);
-	else if(press%2==1)
-		gl::draw(*mySurface2);
 	else
-		gl::draw(*mySurface3);
+		gl::draw(*mySurface2);
 	
 	   
 }

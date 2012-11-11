@@ -80,7 +80,7 @@ void jiangy9_Starbucks::build(Entry* e, int n){
 		newEntries[i] = ((LucyEntry*)e)[i];
 	e = newEntries;
 
-	//mix((LucyEntry*)e, n);
+	mix((LucyEntry*)e, n);
 	r = new node(e);
 	for(int i=1;i<n;i++){
 		insert(&e[i],r,true); 
@@ -221,6 +221,7 @@ void jiangy9_Starbucks::paintPopulation(node* r, uint8_t* dataArray2){
 		double x = 0.0;
 		double y = 0.0;
 		if(((LucyEntry*)(r->data))->pop_old!=0){
+			//console() << ((LucyEntry*)(r->data))->identifier << std::endl;
 			percentage = (((LucyEntry*)(r->data))->pop_new - ((LucyEntry*)(r->data))->pop_old) / ((LucyEntry*)(r->data))->pop_old;
 			//console() << percentage << std::endl;
 
@@ -229,16 +230,34 @@ void jiangy9_Starbucks::paintPopulation(node* r, uint8_t* dataArray2){
 
 			for(int yy=0; yy<=windowHeight; yy++){
 				for(int xx=0;xx<=windowWidth; xx++){
-					if ((xx-x)*(xx-x) + (yy-y)*(yy-y) <= 9.0f*9.0f){
-						dataArray2[4*(xx + yy * windowWidth)] = (int)237*percentage;
-						dataArray2[4*(xx + yy * windowWidth)+1] = (int)28*percentage;
-						dataArray2[4*(xx + yy * windowWidth)+2] = (int)36*percentage;
+					if ((xx-x)*(xx-x) + (yy-y)*(yy-y) <= 3.0f*3.0f){
+						dataArray2[4*(xx + yy * windowWidth)] = (int)(237*percentage);
+						dataArray2[4*(xx + yy * windowWidth)+1] = (int)(28*percentage);
+						dataArray2[4*(xx + yy * windowWidth)+2] = (int)(36*percentage);
 						dataArray2[4*(xx + yy * windowWidth)+3] = 255;
 					}
 				}
 			}
 
 		}
+		/*
+		else{
+			x = ((LucyEntry*)(r->data))->x * windowWidth;
+			y = (1-((LucyEntry*)(r->data))->y) * windowHeight;
+
+			for(int yy=0; yy<=windowHeight; yy++){
+				for(int xx=0;xx<=windowWidth; xx++){
+					if ((xx-x)*(xx-x) + (yy-y)*(yy-y) <= 9.0f*9.0f){
+						dataArray2[4*(xx + yy * windowWidth)] = 0;
+						dataArray2[4*(xx + yy * windowWidth)+1] = 0;
+						dataArray2[4*(xx + yy * windowWidth)+2] = 0;
+						dataArray2[4*(xx + yy * windowWidth)+3] = 255;
+					}
+				}
+			}
+
+		}
+		*/
 
 		paintPopulation(r->right,dataArray);
 	}
