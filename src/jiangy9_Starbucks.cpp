@@ -210,3 +210,40 @@ void jiangy9_Starbucks::traversal(node* r, uint8_t* dataArray){
 	}
 }
 
+void jiangy9_Starbucks::paintPopulation(node* r, uint8_t* dataArray2){
+
+	if(r==NULL)
+		return;
+	else{
+		paintPopulation(r->left,dataArray);
+		double percentage = 0.0;
+		double x = 0.0;
+		double y = 0.0;
+		if(((LucyEntry*)(r->data))->pop_old!=0){
+			percentage = (((LucyEntry*)(r->data))->pop_new - ((LucyEntry*)(r->data))->pop_old) / ((LucyEntry*)(r->data))->pop_old;
+			//console() << percentage << std::endl;
+
+			x = ((LucyEntry*)(r->data))->x * windowWidth;
+			y = (1-((LucyEntry*)(r->data))->y) * windowHeight;
+
+			for(int yy=0; yy<=windowHeight; yy++){
+				for(int xx=0;xx<=windowWidth; xx++){
+					if ((xx-x)*(xx-x) + (yy-y)*(yy-y) <= 9.0f*9.0f){
+						dataArray2[4*(xx + yy * windowWidth)] = (int)237*percentage;
+						dataArray2[4*(xx + yy * windowWidth)+1] = (int)28*percentage;
+						dataArray2[4*(xx + yy * windowWidth)+2] = (int)36*percentage;
+						dataArray2[4*(xx + yy * windowWidth)+3] = 255;
+					}
+				}
+			}
+
+		}
+
+		paintPopulation(r->right,dataArray);
+	}
+
+}
+
+void jiangy9_Starbucks::paint(uint8_t* dataArray2){
+	paintPopulation(r, dataArray2);
+}

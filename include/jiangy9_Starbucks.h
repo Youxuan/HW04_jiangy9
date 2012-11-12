@@ -42,6 +42,8 @@ class LucyEntry : public Entry{
 
 class jiangy9_Starbucks : public Starbucks{
 	public:
+		LucyEntry* lucyEntry;
+
 		node* insert(Entry* e, node* r, bool isXlevel);
 		void traversal(node* r, uint8_t* dataArray);
 		double getDistance(double x, double y, node* r);
@@ -50,6 +52,8 @@ class jiangy9_Starbucks : public Starbucks{
 		void mix(LucyEntry* entries, int length);
 		void setColor();
 		void setArray(uint8_t* newDataArray);
+		void paintPopulation(node* r, uint8_t* dataArray2);
+		void paint(uint8_t* dataArray2);
 		
 		
 		virtual Entry* getNearest(double x, double y);
