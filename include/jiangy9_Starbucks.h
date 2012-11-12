@@ -28,6 +28,7 @@ class population{
 		double pop_number;
 		double pop_x;
 		double pop_y;
+		int id;
 
 		population();
 };

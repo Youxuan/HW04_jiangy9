@@ -35,6 +35,7 @@ population::population(){
 	pop_number = 0.0;
 	pop_x = 0.0;
 	pop_y = 0.0;
+	id = 0;
 }
 
 void jiangy9_Starbucks::setColor(){
