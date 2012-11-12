@@ -79,7 +79,7 @@ void jiangy9_Starbucks::build(Entry* e, int n){
 		newEntries[i] = ((LucyEntry*)e)[i];
 	e = newEntries;
 
-	mix((LucyEntry*)e, n);
+	//mix((LucyEntry*)e, n);
 	r = new node(e);
 	for(int i=1;i<n;i++){
 		insert(&e[i],r,true); 
